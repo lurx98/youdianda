@@ -32,7 +32,7 @@
     </van-form>
     <van-row>
       <van-col span="8"
-        ><router-link to="/reg">没有账户,去注册</router-link></van-col
+        ><router-link replace to="/reg">没有账户,去注册</router-link></van-col
       >
     </van-row>
   </div>

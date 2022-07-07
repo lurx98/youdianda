@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { regApi } from '@/api/Login.js'
 export default {
   name: 'Reg',
   data() {
@@ -78,7 +79,20 @@ export default {
     validator() {
       return this.user.password === this.againPassword ? true : false
     },
-    async onSubmit() {},
+    async onSubmit() {
+      try {
+        const { data } = await regApi(this.user)
+        console.log(data)
+        if (data.errno === 0) {
+          this.$toast.success(data.errmsg)
+          this.$router.replace('/login')
+        } else {
+          this.$toast.fail(data.errmsg)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
   },
 }
 </script>

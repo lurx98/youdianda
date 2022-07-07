@@ -6,4 +6,9 @@ export const loginApi = (data) => request({
     url: "/home/index/login",
     data
 })
+export const regApi = (data) => request({
+    method: "POST",
+    url: "/home/index/reg",
+    data
+})
 
