@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { loginApi } from '@/api/Login'
 export default {
   name: 'Login',
   data() {
@@ -63,8 +64,17 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      console.log('ok')
+    async onSubmit() {
+      try {
+        const { data } = await loginApi(this.user)
+        console.log(data)
+        data.errno === 0
+          ? this.$toast.success(data.errmsg)
+          : this.$toast.fail(data.errmsg)
+      } catch (error) {
+        console.log(error)
+        this.$toast.fail('登入失败')
+      }
     },
   },
 }

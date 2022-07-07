@@ -5,7 +5,9 @@ import { Form } from 'vant'
 import { Field } from 'vant'
 import { Button } from 'vant'
 import { Col, Row } from 'vant'
+import { Toast } from 'vant'
 
+Vue.use(Toast)
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Button)
