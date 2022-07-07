@@ -1,6 +1,6 @@
 <template>
-  <div class="app">
-    <router-view></router-view>
+  <div class="">
+    <van-nav-bar :title="$route.meta.title" />
   </div>
 </template>
 

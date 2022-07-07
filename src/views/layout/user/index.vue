@@ -1,6 +1,6 @@
 <template>
-  <div class="app">
-    <router-view></router-view>
+  <div>
+    <router-link to="/login">去登入</router-link>
   </div>
 </template>
 
