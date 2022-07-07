@@ -40,6 +40,7 @@
 
 <script>
 import { loginApi } from '@/api/Login'
+import { mapMutations } from 'vuex'
 export default {
   name: 'Login',
   data() {
@@ -64,13 +65,18 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setUser']),
     async onSubmit() {
       try {
         const { data } = await loginApi(this.user)
         console.log(data)
-        data.errno === 0
-          ? this.$toast.success(data.errmsg)
-          : this.$toast.fail(data.errmsg)
+        if (data.errno === 0) {
+          this.$toast.success(data.errmsg)
+          this.setUser(data.data.token)
+          this.$router.replace('/user')
+        } else {
+          this.$toast.fail(data.errmsg)
+        }
       } catch (error) {
         console.log(error)
         this.$toast.fail('登入失败')
