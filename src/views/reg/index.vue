@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     validator() {
-      return this.user.password === this.againPassword ? true : false
+      return this.user.password === this.againPassword
     },
     async onSubmit() {
       try {

@@ -69,11 +69,16 @@ export default {
     async onSubmit() {
       try {
         const { data } = await loginApi(this.user)
-        console.log(data)
         if (data.errno === 0) {
           this.$toast.success(data.errmsg)
           this.setUser(data.data.token)
-          this.$router.replace('/user')
+          const url = this.$route.query.url
+          console.log(url)
+          if (url) {
+            this.$router.replace(url)
+          } else {
+            this.$router.replace('/user')
+          }
         } else {
           this.$toast.fail(data.errmsg)
         }
