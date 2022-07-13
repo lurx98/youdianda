@@ -6,22 +6,20 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <van-swipe-cell>
+      <van-swipe-cell v-for="item in list" :key="item.id">
         <van-cell-group>
-          <van-cell title="单元格" value="内容" center>
+          <van-cell value="内容" center>
+            <template #title>
+              <div class="van-multi-ellipsis--l2">{{ item.title }}</div>
+            </template>
             <template #label>
               <div>
-                <p>111</p>
-                <span><van-icon name="eye-o" />收藏()</span>
-                <span><van-icon name="good-job" />点赞(7)</span>
+                <div class="van-multi-ellipsis--l2">{{ item.content }}</div>
+                <span><van-icon name="eye-o" />收藏({{ item.lovenum }})</span>
+                <span><van-icon name="good-job" />点赞({{ item.click }})</span>
               </div>
             </template>
-            <van-image
-              width="100"
-              height="100"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
-              class="aaa"
-            />
+            <van-image height="100" :src="baseUrl + item.pic" />
           </van-cell>
         </van-cell-group>
 
@@ -36,6 +34,7 @@
 
 <script>
 import { getUserArticleApi } from '@/api/User'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -44,20 +43,27 @@ export default {
       finished: false,
       art: {
         page: 1,
-        list: 10,
+        limit: 10,
       },
     }
+  },
+  computed: {
+    ...mapState(['baseUrl']),
   },
   methods: {
     async onLoad() {
       try {
-        const { data } = await getUserArticleApi()
-        console.log(data)
-        this.finished = true
-        // this.list = data.data
-      } catch (error) {}
-      // 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
+        const { data } = await getUserArticleApi({ ...this.art })
+        this.art.page++
+        this.loading = false
+        this.list.push(...data.data.data)
+        console.log(data.data.data.length)
+        if (data.data.data.length < 10) {
+          this.finished = true
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }

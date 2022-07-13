@@ -49,7 +49,7 @@ export default {
       newArticles: [],
       loading: false,
       finished: false,
-      new: {
+      news: {
         page: 1,
         limit: 10,
       },
@@ -61,13 +61,13 @@ export default {
       try {
         const { data } = await getClassifyNewListApi({
           cateid: this.$route.query.id,
-          ...this.new,
+          ...this.news,
         })
-        this.new.page++
+        this.news.page++
         this.loading = false
         this.newArticles.push(...data.data.list.data)
         if (data.data.list.data.length < 10) {
-          this.new.page = 1
+          this.news.page = 1
           this.finished = true
         }
       } catch (error) {

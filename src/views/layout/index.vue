@@ -5,7 +5,7 @@
         <router-link to="/set"><van-icon name="setting-o" /></router-link>
       </template>
       <template #left v-if="isBack">
-        <div @click="$router.go(-1)"><van-icon name="arrow-left" /></div>
+        <div @click="back"><van-icon name="arrow-left" /></div>
       </template>
     </van-nav-bar>
     <router-view />
@@ -34,6 +34,15 @@ export default {
     },
     isBack() {
       return this.$route.meta.isBack
+    },
+  },
+  methods: {
+    back() {
+      if (this.$route.meta.my) {
+        this.$router.push('/user')
+      } else {
+        this.$router.go(-1)
+      }
     },
   },
 }

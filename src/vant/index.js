@@ -17,7 +17,15 @@ import { Card } from 'vant'
 import { Swipe, SwipeItem } from 'vant'
 import { NoticeBar } from 'vant'
 import { Tab, Tabs } from 'vant'
+import { Empty } from 'vant'
+import { Picker } from 'vant'
+import { Popup } from 'vant'
+import { Uploader } from 'vant'
 
+Vue.use(Uploader)
+Vue.use(Popup)
+Vue.use(Picker)
+Vue.use(Empty)
 Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(NoticeBar)

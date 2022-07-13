@@ -19,7 +19,7 @@
           },
         }"
       >
-        <new-list :newList="newArticles"></new-list>
+        <new-list ></new-list>
       </van-tab>
     </van-tabs>
   </div>

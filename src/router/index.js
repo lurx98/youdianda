@@ -52,7 +52,8 @@ const routes = [
         meta: {
           title: "我的文章",
           needLogin: true,
-          isBack: true
+          isBack: true,
+          my: true
 
         }
       },
@@ -62,7 +63,8 @@ const routes = [
         meta: {
           title: "我的收藏",
           needLogin: true,
-          isBack: true
+          isBack: true,
+          my: true
 
 
         }
@@ -73,7 +75,8 @@ const routes = [
         meta: {
           title: "我的点赞",
           needLogin: true,
-          isBack: true
+          isBack: true,
+          my: true
         }
       }
 
