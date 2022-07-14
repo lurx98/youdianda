@@ -78,6 +78,16 @@ const routes = [
           isBack: true,
           my: true
         }
+      },
+      {
+        path: 'userinfo',
+        component: () => import('@/views/layout/user/my/UserInfo.vue'),
+        meta: {
+          title: "修改用户资料",
+          needLogin: true,
+          isBack: true,
+          my: true
+        }
       }
 
     ]

@@ -6,7 +6,7 @@
       </template>
     </van-nav-bar>
 
-    <van-tabs v-model="listInfo.id" @click="sendId" swipeable>
+    <van-tabs v-model="listInfo.id" swipeable>
       <van-tab
         v-for="item in classifyList"
         :name="item.id"
@@ -19,7 +19,7 @@
           },
         }"
       >
-        <new-list ></new-list>
+        <new-list></new-list>
       </van-tab>
     </van-tabs>
   </div>
@@ -51,9 +51,6 @@ export default {
         const { data } = await getHomeIndexApi()
         this.classifyList = data.data.allCate
       } catch (error) {}
-    },
-    sendId(name) {
-      console.log('ok')
     },
   },
   mounted() {

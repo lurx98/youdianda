@@ -18,7 +18,7 @@
     <van-grid :gutter="10" :column-num="3" class="hot-articles">
       <van-grid-item v-for="item in hotArticles" :key="item.id">
         <van-image width="90" height="90" :src="baseUrl + item.pic" />
-        <span>{{ hotArticles.title }}</span>
+        <span class="van-multi-ellipsis--l2">{{ item.title }}</span>
       </van-grid-item>
     </van-grid>
     <van-cell-group class="title">

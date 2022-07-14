@@ -21,7 +21,11 @@ import { Empty } from 'vant'
 import { Picker } from 'vant'
 import { Popup } from 'vant'
 import { Uploader } from 'vant'
+import { Loading } from 'vant'
+import { DatetimePicker } from 'vant'
 
+Vue.use(DatetimePicker)
+Vue.use(Loading)
 Vue.use(Uploader)
 Vue.use(Popup)
 Vue.use(Picker)

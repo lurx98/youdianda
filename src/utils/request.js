@@ -2,7 +2,7 @@ import axios from "axios"
 import store from "@/store"
 // Set config defaults when creating the instance
 const instance = axios.create({
-    baseURL: 'http://124.223.14.236:8060'
+    baseURL: 'http://124.223.14.236:8060/'
 })
 
 // 添加请求拦截器

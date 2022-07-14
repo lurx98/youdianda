@@ -46,6 +46,7 @@ export default {
   },
   data() {
     return {
+      queryId: this.$route.query.id,
       newArticles: [],
       loading: false,
       finished: false,
@@ -56,6 +57,16 @@ export default {
     }
   },
   created() {},
+  watch: {
+    queryId: {
+      handler() {
+        console.log('ok')
+        this.finished = false
+        this.newArticles.splice(0)
+        this.onLoad()
+      },
+    },
+  },
   methods: {
     async onLoad() {
       try {
@@ -73,16 +84,6 @@ export default {
       } catch (error) {
         console.log(error)
       }
-    },
-    async renter() {
-      try {
-        const { data } = await getClassifyNewListApi({
-          cateid: this.$route.query.id,
-          page: 1,
-          limit: 10,
-        })
-        this.newArticles = data.data.list.data
-      } catch (error) {}
     },
   },
 }

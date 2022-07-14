@@ -9,7 +9,7 @@ const TOKEN_KEY = 'USER'
 export default new Vuex.Store({
   state: {
     user: getItem(TOKEN_KEY) || '',
-    baseUrl: 'http://122.51.249.55:8060/',
+    baseUrl: 'http://124.223.14.236:8060/',
     listInfo: {},
   },
   getters: {
