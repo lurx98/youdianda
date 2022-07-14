@@ -14,7 +14,7 @@
             </template>
             <template #label>
               <div>
-                <div class="van-multi-ellipsis--l2">{{ item.content }}</div>
+                <div class="van-multi-ellipsis--l2">{{ item.description }}</div>
                 <span><van-icon name="eye-o" />收藏({{ item.lovenum }})</span>
                 <span><van-icon name="good-job" />点赞({{ item.click }})</span>
               </div>
@@ -26,12 +26,11 @@
         <template #right>
           <van-button
             square
-            text="删除"
+            text="取消收藏"
             type="danger"
             class="delete-button"
-            @click="delArticle(item.id)"
+            @click="cancelArticle(item.id)"
           />
-          <van-button square text="修改" type="primary" class="delete-button" />
         </template>
       </van-swipe-cell>
     </van-list>
@@ -39,7 +38,7 @@
 </template>
 
 <script>
-import { getUserArticleApi, delArticleApi } from '@/api/User'
+import { getUserCollectApi, cancelUserCollectApi } from '@/api/User'
 import { mapState } from 'vuex'
 export default {
   data() {
@@ -48,6 +47,7 @@ export default {
       loading: false,
       finished: false,
       art: {
+        type: 1,
         page: 1,
         limit: 10,
       },
@@ -59,12 +59,12 @@ export default {
   methods: {
     async onLoad() {
       try {
-        const { data } = await getUserArticleApi({ ...this.art })
+        const { data } = await getUserCollectApi({ ...this.art })
         this.art.page++
         this.loading = false
-        this.list.push(...data.data.data)
-        console.log(data.data.data.length)
-        if (data.data.data.length < 10) {
+        this.list.push(...data.data.list.data)
+        console.log(data.data.list.data.length)
+        if (data.data.list.data.length < 10) {
           this.finished = true
           this.art.page = 1
         }
@@ -72,13 +72,17 @@ export default {
         console.log(error)
       }
     },
-    async delArticle(id) {
+    async cancelArticle(id) {
       try {
-        await delArticleApi({ id })
+        await cancelUserCollectApi({
+          type: 1,
+          article_id: id,
+          action: 'del',
+        })
         this.list.splice(0)
         this.art.page = 1
         await this.onLoad()
-        this.$toast.success('删除成功')
+        this.$toast.success('取消收藏成功')
       } catch (error) {
         console.log(error)
       }

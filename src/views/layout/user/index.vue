@@ -43,9 +43,9 @@
         </div>
       </div>
       <van-grid :column-num="3" clickable>
-        <van-grid-item icon="like-o" text="收藏" />
-        <van-grid-item icon="good-job-o" text="点赞" />
-        <van-grid-item icon="newspaper-o" text="文章" />
+        <van-grid-item icon="like-o" text="收藏" to="/save" />
+        <van-grid-item icon="good-job-o" text="点赞" to="/zan" />
+        <van-grid-item icon="newspaper-o" text="文章" to="/article" />
       </van-grid>
     </div>
     <van-cell icon="newspaper-o" title="我的文章" is-link to="/article" />

@@ -21,4 +21,8 @@ export const getUserCollectApi = (params) => request({
     url: "/home/user/userDataList",
     params
 })
+export const cancelUserCollectApi = (params) => request({
+    url: "/home/user/userDataHandle",
+    params
+})
 
