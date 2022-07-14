@@ -31,7 +31,7 @@
             fit="cover"
             width="75px"
             height="75px"
-            :src="'http://124.223.14.236:8060/' + userInfo.icon"
+            :src="baseUrl + userInfo.icon"
           />
           <div class="title">
             <h1>{{ userInfo.username }}</h1>
@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     ...mapGetters(['token']),
-    ...mapState(['user']),
+    ...mapState(['user', 'baseUrl']),
   },
 }
 </script>

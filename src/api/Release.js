@@ -10,3 +10,12 @@ export const addArticleApi = (data) => request({
     method: "POST",
     data
 })
+export const showArticleApi = (params) => request({
+    url: "/home/index/show",
+    params
+})
+export const editArticleApi = (data) => request({
+    method: 'POST',
+    url: "/home/user/editArticle",
+    data
+})

@@ -2,7 +2,7 @@
   <div class="home-container">
     <van-swipe :autoplay="3000" width="100%" height="170">
       <van-swipe-item v-for="(image, index) in banner" :key="index">
-        <img :src="'http://124.223.14.236:8060/' + image.advimgsrc" />
+        <img :src="baseUrl + image.advimgsrc" />
       </van-swipe-item>
     </van-swipe>
     <!-- 文字较短时，通过设置 scrollable 属性开启滚动播放 -->
@@ -17,12 +17,8 @@
     </van-cell-group>
     <van-grid :gutter="10" :column-num="3" class="hot-articles">
       <van-grid-item v-for="item in hotArticles" :key="item.id">
-        <van-image
-          width="90"
-          height="90"
-          :src="'http://124.223.14.236:8060/' + item.pic"
-        />
-        <span>11</span>
+        <van-image width="90" height="90" :src="baseUrl + item.pic" />
+        <span>{{ hotArticles.title }}</span>
       </van-grid-item>
     </van-grid>
     <van-cell-group class="title">

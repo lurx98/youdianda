@@ -24,8 +24,20 @@
         </van-cell-group>
 
         <template #right>
-          <van-button square text="删除" type="danger" class="delete-button" />
-          <van-button square text="修改" type="primary" class="delete-button" />
+          <van-button
+            square
+            text="删除"
+            type="danger"
+            class="delete-button"
+            @click="delArticle(item.id)"
+          />
+          <van-button
+            square
+            text="修改"
+            type="primary"
+            class="delete-button"
+            @click="editArticle(item.id)"
+          />
         </template>
       </van-swipe-cell>
     </van-list>
@@ -33,7 +45,7 @@
 </template>
 
 <script>
-import { getUserArticleApi } from '@/api/User'
+import { getUserArticleApi, delArticleApi } from '@/api/User'
 import { mapState } from 'vuex'
 export default {
   data() {
@@ -60,10 +72,30 @@ export default {
         console.log(data.data.data.length)
         if (data.data.data.length < 10) {
           this.finished = true
+          this.art.page = 1
         }
       } catch (error) {
         console.log(error)
       }
+    },
+    async delArticle(id) {
+      try {
+        await delArticleApi({ id })
+        this.list.splice(0)
+        this.art.page = 1
+        await this.onLoad()
+        this.$toast.success('删除成功')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    editArticle(id) {
+      this.$router.push({
+        path: '/release',
+        query: {
+          id,
+        },
+      })
     },
   },
 }

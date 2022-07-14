@@ -1,6 +1,6 @@
 <template>
   <div class="release-container">
-    <van-form ref="form" @submit="onSubmit">
+    <van-form ref="form">
       <van-field
         v-model="user.title"
         name="title"
@@ -13,7 +13,7 @@
         readonly
         clickable
         name="pickerCate"
-        :value="catename"
+        :value="user.catename"
         label="文章分类"
         placeholder="请选择文章分类"
         @click="showPickerCate = true"
@@ -67,8 +67,12 @@
       />
 
       <div class="button" v-if="queryId">
-        <van-button type="info" native-type="button">存草稿</van-button>
-        <van-button type="primary" native-type="button">修改文章</van-button>
+        <van-button type="info" native-type="button" @click="onSend(1)"
+          >存草稿</van-button
+        >
+        <van-button type="primary" native-type="button" @click="onSend(2)"
+          >修改文章</van-button
+        >
         <van-button type="danger" native-type="button" @click="onReset"
           >重置</van-button
         >
@@ -90,7 +94,13 @@
 
 <script>
 import { getHomeIndexApi } from '@/api/Home'
-import { updatedImgApi, addArticleApi } from '@/api/Release'
+import {
+  updatedImgApi,
+  addArticleApi,
+  showArticleApi,
+  editArticleApi,
+} from '@/api/Release'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -104,6 +114,7 @@ export default {
         pic: '',
         content: '',
         state: 2,
+        catename: '',
       },
       catename: '',
       fileList: [
@@ -125,8 +136,13 @@ export default {
   },
   created() {
     this.initData()
+    if (this.queryId) {
+      this.initEditArticleDate()
+    }
   },
+  computed: { ...mapState(['baseUrl']) },
   methods: {
+    //初始化分类和标签
     async initData() {
       try {
         const { data } = await getHomeIndexApi()
@@ -134,11 +150,21 @@ export default {
         this.tagsList = data.data.allTag
       } catch (error) {}
     },
-    async onSubmit() {},
+    //修改文章事件
+    async initEditArticleDate() {
+      try {
+        const { data } = await showArticleApi({
+          id: this.queryId,
+        })
+        console.log(data)
+        this.user = { ...data.data.info }
+        this.fileList = [{ url: this.baseUrl + this.user.pic }]
+      } catch (error) {}
+    },
     //文章分类
     onConfirmCate(value) {
       this.user.cateid = value.id
-      this.catename = value.catename
+      this.user.catename = value.catename
       this.showPickerCate = false
     },
     //文章标签
@@ -160,6 +186,10 @@ export default {
       this.fileList = []
     },
     async onSend(state) {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+      })
       try {
         await this.$refs.form.validate([
           'title',
@@ -172,7 +202,20 @@ export default {
         })
         this.user.pic = data.data.savePath
         this.user.state = state.toString()
-        await addArticleApi({ ...this.user })
+        if (this.queryId) {
+          const { data } = await editArticleApi(this.user)
+          if (data.errno === 0) {
+            this.$toast.success('成功')
+            this.$toast.clear()
+          }
+        } else {
+          const { data } = await addArticleApi({ ...this.user })
+          if (data.errno === 0) {
+            this.$toast.success('成功')
+            this.$toast.clear()
+          }
+        }
+
         this.$router.push('/article')
       } catch (error) {
         console.log(error)
