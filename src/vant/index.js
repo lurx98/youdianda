@@ -25,6 +25,9 @@ import { Loading } from 'vant'
 import { DatetimePicker } from 'vant'
 
 Vue.use(DatetimePicker)
+import { Divider } from 'vant'
+
+Vue.use(Divider)
 Vue.use(Loading)
 Vue.use(Uploader)
 Vue.use(Popup)
