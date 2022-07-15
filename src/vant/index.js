@@ -21,7 +21,11 @@ import { Empty } from 'vant'
 import { Picker } from 'vant'
 import { Popup } from 'vant'
 import { Uploader } from 'vant'
+import { Loading } from 'vant'
+import { Divider } from 'vant'
 
+Vue.use(Divider)
+Vue.use(Loading)
 Vue.use(Uploader)
 Vue.use(Popup)
 Vue.use(Picker)

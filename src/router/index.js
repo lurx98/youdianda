@@ -79,7 +79,6 @@ const routes = [
           my: true
         }
       }
-
     ]
   },
   {
@@ -104,8 +103,15 @@ const routes = [
       title: '列表',
       isBack: true
     }
+  },
+  {
+    path: '/details',
+    component: () => import('@/views/article'),
+    meta: {
+      title: '文章详情',
+      isBack: true
+    }
   }
-
 
 ]
 
