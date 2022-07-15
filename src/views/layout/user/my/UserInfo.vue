@@ -3,17 +3,17 @@
     <!-- 头像  -->
     <cropper></cropper>
     <!-- 昵称 -->
-    <nick-name></nick-name>
+    <nick-name :user-info="userInfo"></nick-name>
     <!-- 手机号 -->
-    <phone-number></phone-number>
+    <phone-number :user-info="userInfo"></phone-number>
     <!-- 性别选择 -->
     <sex></sex>
     <!-- 出生年月 -->
     <birthday></birthday>
     <!-- 家庭住址 -->
-    <my-address></my-address>
+    <my-address :user-info="userInfo"></my-address>
     <!-- 个人留言 -->
-    <message></message>
+    <message :user-info="userInfo"></message>
   </div>
 </template>
 
@@ -25,7 +25,9 @@ import Sex from '@/views/layout/user/my/components/Sex.vue'
 import Birthday from '@/views/layout/user/my/components/Birthday.vue'
 import MyAddress from '@/views/layout/user/my/components/MyAddress'
 import Message from '@/views/layout/user/my/components/Message.vue'
+import { getUserInfo } from '@/api/User'
 export default {
+  name: 'UserInfo',
   components: {
     Cropper,
     NickName,
@@ -35,14 +37,21 @@ export default {
     MyAddress,
     Message,
   },
+  data() {
+    return {
+      userInfo: {},
+    }
+  },
+  created() {
+    this.initInfo()
+  },
   methods: {
-    // 返回 Promise
-    beforeRead(file) {
-      console.log(file)
-      if (file.type !== 'image/jpeg') {
-        return false
-      }
-      return true
+    async initInfo() {
+      try {
+        const { data } = await getUserInfo()
+        console.log()
+        this.userInfo = data.data.userInfo
+      } catch (error) {}
     },
   },
 }

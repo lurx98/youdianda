@@ -72,5 +72,13 @@ export default {
   .van-nav-bar__title {
     color: #1b8afa !important;
   }
+  .van-tabs__wrap {
+    position: fixed;
+    top: 92px;
+    z-index: 1000;
+  }
+  .van-tabs__content {
+    margin-top: 92px;
+  }
 }
 </style>

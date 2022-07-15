@@ -25,4 +25,9 @@ export const cancelUserCollectApi = (params) => request({
     url: "/home/user/userDataHandle",
     params
 })
+export const updateUserInfoApi = (data) => request({
+    method: 'POST',
+    url: "/home/user/update",
+    data
+})
 
