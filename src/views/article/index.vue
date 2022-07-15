@@ -4,22 +4,22 @@
     <van-nav-bar
       class="page-nav-bar"
       left-arrow
-      title="黑马头条"
+      title="文章详情"
       @click-left="$router.back()"
     ></van-nav-bar>
     <!-- /导航栏 -->
 
     <div class="main-wrap">
       <!-- 加载中 -->
-      <div class="loading-wrap">
+      <div class="loading-wrap" v-if="stateCode === 1">
         <van-loading color="#3296fa" vertical>加载中</van-loading>
       </div>
       <!-- /加载中 -->
 
       <!-- 加载完成-文章详情 -->
-      <div class="article-detail">
+      <div class="article-detail" v-if="stateCode === 2">
         <!-- 文章标题 -->
-        <h1 class="article-title">这是文章标题</h1>
+        <h1 class="article-title">{{ articleInfo.title }}</h1>
         <!-- /文章标题 -->
 
         <!-- 用户信息 -->
@@ -29,34 +29,49 @@
             slot="icon"
             round
             fit="cover"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="baseUrl + articleInfo.pic"
           />
-          <div slot="title" class="user-name">黑马头条号</div>
+          <div slot="title" class="user-name">{{ articleInfo.author }}</div>
           <div slot="label" class="publish-date">14小时前</div>
-          <van-button
-            class="follow-btn"
-            type="info"
-            color="#3296fa"
-            round
-            size="small"
-            icon="plus"
-            >关注</van-button
-          >
-          <!-- <van-button
-            class="follow-btn"
-            round
-            size="small"
-          >已关注</van-button> -->
         </van-cell>
         <!-- /用户信息 -->
 
         <!-- 文章内容 -->
-        <div class="article-content">这是文章内容</div>
+        <div
+          class="article-content markdown-body"
+          v-html="articleInfo.content"
+        ></div>
         <van-divider>正文结束</van-divider>
+
+        <van-cell-group class="title">
+          <van-cell title="热门推荐" />
+        </van-cell-group>
+        <van-grid :gutter="10" :column-num="2" class="hot-articles">
+          <van-grid-item
+            v-for="item in recommendList"
+            :key="item.id"
+            :to="{
+              path: '/details',
+              query: {
+                id: item.id,
+              },
+            }"
+          >
+            <van-image width="90" height="90" :src="baseUrl + item.pic" />
+            <span class="van-multi-ellipsis--l2">{{ item.title }}</span>
+          </van-grid-item>
+        </van-grid>
+
         <!-- 底部区域 -->
         <div class="article-bottom">
-          <van-icon color="#777" name="star-o" />
-          <van-icon color="#777" name="good-job-o" />
+          <collect-article
+            :is-collect.sync="articleInfo.isCollect"
+            :article-id="queryId"
+          />
+          <zan-article
+            :is-zan.sync="articleInfo.isLike"
+            :article-id="queryId"
+          />
           <van-icon name="share" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
@@ -64,14 +79,14 @@
       <!-- /加载完成-文章详情 -->
 
       <!-- 加载失败：404 -->
-      <div class="error-wrap">
+      <div class="error-wrap" v-if="stateCode === 3">
         <van-icon name="failure" />
         <p class="text">该资源不存在或已删除！</p>
       </div>
       <!-- /加载失败：404 -->
 
       <!-- 加载失败：其它未知错误（例如网络原因或服务端异常） -->
-      <div class="error-wrap">
+      <div class="error-wrap" v-if="stateCode === 4">
         <van-icon name="failure" />
         <p class="text">内容加载失败！</p>
         <van-button class="retry-btn">点击重试</van-button>
@@ -82,33 +97,65 @@
 </template>
 
 <script>
+import { showArticleApi } from '@/api/Release'
+import { mapState } from 'vuex'
+import CollectArticle from '@/components/CollectArticle.vue'
+import ZanArticle from '@/components/ZanArticle.vue'
 export default {
   name: 'ArticleIndex',
-  components: {},
-  props: {
-    // 使用props获取动态路由的数据
-    articleId: {
-      type: [Number, String],
-      required: true,
-    },
-  },
+  components: { CollectArticle, ZanArticle },
+
   data() {
     return {
+      queryId: this.$route.query.id,
       articleInfo: {},
+      recommendList: [],
+      stateCode: 1,
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['baseUrl']),
+  },
   watch: {},
-  created() {},
-  mounted() {},
+  created() {
+    this.initData()
+  },
+  watch: {
+    $route: {
+      deep: true,
+      handler() {
+        this.$router.go(0)
+      },
+    },
+  },
   methods: {
-    initData() {},
+    async initData() {
+      try {
+        const { data } = await showArticleApi({
+          id: this.queryId,
+        })
+        this.articleInfo = data.data.info
+        this.recommendList = data.data.recommend
+        this.stateCode = 2
+      } catch (error) {
+        console.log(error)
+        if (error.response.status === 500) {
+          this.stateCode = 3
+        }
+      }
+    },
   },
 }
 </script>
 
 <style scoped lang="less">
+@import url('@/styles/github-markdown.css');
 .article-container {
+  .hot-articles {
+    span {
+      font-size: 12px;
+    }
+  }
   .main-wrap {
     position: fixed;
     left: 0;

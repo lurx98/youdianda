@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { getUserCollectApi, cancelUserCollectApi } from '@/api/User'
+import { getUserCollectApi, userChangeApi } from '@/api/User'
 import { mapState } from 'vuex'
 export default {
   data() {
@@ -74,7 +74,7 @@ export default {
     },
     async cancelArticle(id) {
       try {
-        await cancelUserCollectApi({
+        await userChangeApi({
           type: 1,
           article_id: id,
           action: 'del',

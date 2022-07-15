@@ -16,7 +16,16 @@
       <van-cell title="热门推荐" />
     </van-cell-group>
     <van-grid :gutter="10" :column-num="3" class="hot-articles">
-      <van-grid-item v-for="item in hotArticles" :key="item.id">
+      <van-grid-item
+        v-for="item in hotArticles"
+        :key="item.id"
+        :to="{
+          path: '/details',
+          query: {
+            id: item.id,
+          },
+        }"
+      >
         <van-image width="90" height="90" :src="baseUrl + item.pic" />
         <span class="van-multi-ellipsis--l2">{{ item.title }}</span>
       </van-grid-item>
@@ -37,6 +46,12 @@
           center
           v-for="item in newArticles"
           :key="item.id"
+          :to="{
+            path: '/details',
+            query: {
+              id: item.id,
+            },
+          }"
         >
           <template #title>
             <div class="van-multi-ellipsis--l2">{{ item.title }}</div>
