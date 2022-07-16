@@ -174,6 +174,7 @@ export default {
     },
     //重置
     onReset() {
+      if (this.queryId) return this.$router.go(0)
       this.catename = ''
       this.user = {
         title: '',
@@ -197,10 +198,13 @@ export default {
           'pickerTags',
           'content',
         ])
-        const { data } = await updatedImgApi({
-          file: this.fileList[0].file,
-        })
-        this.user.pic = data.data.savePath
+        if (this.fileList[0].file) {
+          const { data } = await updatedImgApi({
+            file: this.fileList[0].file,
+          })
+          this.user.pic = data.data.savePath
+        }
+
         this.user.state = state.toString()
         if (this.queryId) {
           const { data } = await editArticleApi(this.user)
