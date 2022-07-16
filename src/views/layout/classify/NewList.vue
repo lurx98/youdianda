@@ -12,6 +12,12 @@
           center
           v-for="item in newArticles"
           :key="item.id"
+          :to="{
+            path: '/details',
+            query: {
+              id: item.id,
+            },
+          }"
         >
           <template #title>
             <div class="van-multi-ellipsis--l2">{{ item.title }}</div>

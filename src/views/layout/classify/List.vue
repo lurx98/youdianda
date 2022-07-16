@@ -19,7 +19,7 @@
           },
         }"
       >
-        <new-list></new-list>
+        <new-list v-if="item.id == $route.query.id"></new-list>
       </van-tab>
     </van-tabs>
   </div>
