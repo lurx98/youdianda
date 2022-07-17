@@ -5,8 +5,8 @@
       <van-cell title="头像" is-link>
         <!-- 使用 title 插槽来自定义标题 -->
         <template #default>
-          <van-uploader :before-read="beforeRead" accept="image/*">
-            <img src="https://img01.yzcdn.cn/vant/leaf.jpg" alt="" />
+          <van-uploader ref="inp" :before-read="beforeRead" accept="image/*">
+            <img :src="baseUrl + userInfo.icon" alt="" />
           </van-uploader>
         </template>
       </van-cell>
@@ -36,6 +36,7 @@
             :full="option.full"
             :autoCropWidth="option.autoCropWidth"
             :autoCropHeight="option.autoCropHeight"
+            :canScale="true"
             :canMove="option.canMove"
             :canMoveBox="option.canMoveBox"
             :original="option.original"
@@ -60,13 +61,20 @@
   </div>
 </template>
  <script>
+import { updatedImgApi } from '@/api/Release'
+import { updateUserInfoApi } from '@/api/User'
+
 import { VueCropper } from 'vue-cropper'
+import { mapState } from 'vuex'
 export default {
   name: 'uploadAva',
   components: {
     VueCropper,
   },
   props: {
+    userInfo: {
+      type: Object,
+    },
     showAta: {
       default: false,
       type: Boolean,
@@ -104,6 +112,9 @@ export default {
       loadingShow: false, // 是否展示loading
     }
   },
+  computed: {
+    ...mapState(['baseUrl']),
+  },
   methods: {
     beforeRead(file) {
       if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
@@ -126,13 +137,27 @@ export default {
       // let formData = new FormData()
       this.loadingShow = true
       console.log(this.option)
-      this.$refs.cropper.getCropBlob((data) => {
+      this.$refs.cropper.getCropBlob(async (data) => {
         // formData.append('headFile', data, this.imageFileName)
         // formData.append('id', this.$store.getters.user.userId)
         console.log(data)
         // uploadAva(formData).then((res) => {
         // this.showCropper = false
         this.$emit('update:showAta', false)
+        try {
+          const fd = new FormData()
+          fd.append('file', data)
+
+          const url = await updatedImgApi(fd)
+          console.log(url.data.data.savePath)
+          this.userInfo.icon = url.data.data.savePath
+          await updateUserInfoApi({
+            id: this.userInfo.id,
+            icon: this.userInfo.icon,
+          })
+        } catch (error) {
+          console.log(error)
+        }
         this.showCropper = false
         // this.$emit('update:avaUrl', res.data)
         // })
@@ -143,13 +168,14 @@ export default {
       this.showCropper = false
       this.$parent.showPhotoUploader = false
     },
+    aaa() {},
   },
 }
 </script> 
  <style lang="less" scoped>
 img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: block;
 }
 //  .uploder{
@@ -233,7 +259,7 @@ img {
   }
   .vue-cropper {
     background: #000;
-    height: 100%;
+    height: 95%;
     padding-top: 46px;
     box-sizing: border-box;
   }

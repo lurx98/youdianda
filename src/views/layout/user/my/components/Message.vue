@@ -15,7 +15,7 @@
       position="bottom"
       :style="{ height: '100%' }"
     >
-      <van-nav-bar title="家庭住址">
+      <van-nav-bar title="个人留言">
         <template #right>
           <span @click="editUserInfo">完成</span>
         </template>
@@ -27,7 +27,7 @@
         autosize
         type="textarea"
         maxlength="30"
-        placeholder="请输入家庭住址"
+        placeholder="请输入个人留言"
         show-word-limit
       />
     </van-popup>
@@ -59,7 +59,7 @@ export default {
       try {
         const { data } = await updateUserInfoApi({
           id: this.userInfo.id,
-          username: this.notes,
+          notes: this.notes,
         })
 
         this.userInfo.notes = this.notes

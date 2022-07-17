@@ -59,7 +59,7 @@ export default {
       try {
         const { data } = await updateUserInfoApi({
           id: this.userInfo.id,
-          username: this.address,
+          address: this.address,
         })
 
         this.userInfo.address = this.address
