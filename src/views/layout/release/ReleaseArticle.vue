@@ -199,9 +199,9 @@ export default {
           'content',
         ])
         if (this.fileList[0].file) {
-          const { data } = await updatedImgApi({
-            file: this.fileList[0].file,
-          })
+          const fd = new FormData()
+          fd.append('file', this.fileList[0].file)
+          const { data } = await updatedImgApi(fd)
           this.user.pic = data.data.savePath
         }
 
