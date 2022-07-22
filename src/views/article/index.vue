@@ -38,6 +38,7 @@
 
         <!-- 文章内容 -->
         <div
+          ref="content"
           class="article-content markdown-body"
           v-html="articleInfo.content"
         ></div>
@@ -101,9 +102,13 @@ import { showArticleApi } from '@/api/Release'
 import { mapState } from 'vuex'
 import CollectArticle from '@/components/CollectArticle.vue'
 import ZanArticle from '@/components/ZanArticle.vue'
+import { ImagePreview } from 'vant'
 export default {
   name: 'ArticleIndex',
-  components: { CollectArticle, ZanArticle },
+  components: {
+    CollectArticle,
+    ZanArticle,
+  },
 
   data() {
     return {
@@ -116,7 +121,6 @@ export default {
   computed: {
     ...mapState(['baseUrl']),
   },
-  watch: {},
   created() {
     this.initData()
   },
@@ -137,6 +141,15 @@ export default {
         this.articleInfo = data.data.info
         this.recommendList = data.data.recommend
         this.stateCode = 2
+        this.$nextTick(() => {
+          const images = this.$refs.content.querySelectorAll('img')
+          const imgSrc = Array.from(images).map((img) => img.src)
+          images.forEach((img, inx) => {
+            img.onclick = function () {
+              ImagePreview({ images: imgSrc, startPosition: inx })
+            }
+          })
+        })
       } catch (error) {
         console.log(error)
         if (error.response.status === 500) {
@@ -150,12 +163,14 @@ export default {
 
 <style scoped lang="less">
 @import url('@/styles/github-markdown.css');
+
 .article-container {
   .hot-articles {
     span {
       font-size: 12px;
     }
   }
+
   .main-wrap {
     position: fixed;
     left: 0;
@@ -165,6 +180,7 @@ export default {
     overflow-y: scroll;
     background-color: #fff;
   }
+
   .article-detail {
     .article-title {
       font-size: 40px;
@@ -175,22 +191,27 @@ export default {
 
     .user-info {
       padding: 0 32px;
+
       .avatar {
         width: 70px;
         height: 70px;
         margin-right: 17px;
       }
+
       .van-cell__label {
         margin-top: 0;
       }
+
       .user-name {
         font-size: 24px;
         color: #3a3a3a;
       }
+
       .publish-date {
         font-size: 23px;
         color: #b7b7b7;
       }
+
       .follow-btn {
         width: 170px;
         height: 58px;
@@ -199,6 +220,7 @@ export default {
 
     .article-content {
       padding: 55px 32px;
+
       /deep/ p {
         text-align: justify;
       }
@@ -220,15 +242,18 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: #fff;
+
     .van-icon {
       font-size: 122px;
       color: #b4b4b4;
     }
+
     .text {
       font-size: 30px;
       color: #666666;
       margin: 33px 0 46px;
     }
+
     .retry-btn {
       width: 280px;
       height: 70px;
@@ -251,6 +276,7 @@ export default {
     height: 88px;
     border-top: 1px solid #d8d8d8;
     background-color: #fff;
+
     .comment-btn {
       width: 282px;
       height: 46px;
@@ -259,8 +285,10 @@ export default {
       line-height: 46px;
       color: #a7a7a7;
     }
+
     .van-icon {
       font-size: 40px;
+
       .van-info {
         font-size: 16px;
         background-color: #e22829;

@@ -16,12 +16,12 @@ export default {
   props: {
     isCollect: {
       type: Boolean,
-      require: true,
+      require: true
     },
     articleId: {
       type: [String, Number],
-      require: true,
-    },
+      require: true
+    }
   },
   data() {
     return {
@@ -29,7 +29,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['token']),
+    ...mapGetters(['token'])
   },
   methods: {
     async changeCollect() {
@@ -40,13 +40,13 @@ export default {
           await userChangeApi({
             type: 1,
             article_id: this.articleId,
-            action: 'del',
+            action: 'del'
           })
         } else {
           await userChangeApi({
             type: 1,
             article_id: this.articleId,
-            action: 'add',
+            action: 'add'
           })
         }
         this.$toast.success(this.isCollect ? '取消成功' : '收藏成功')
@@ -56,8 +56,8 @@ export default {
         this.$toast.fail('收藏失败')
       }
       this.isLodging = false
-    },
-  },
+    }
+  }
 }
 </script>
 

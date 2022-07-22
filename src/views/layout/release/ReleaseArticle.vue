@@ -161,7 +161,7 @@ export default {
         this.fileList = [{ url: this.baseUrl + this.user.pic }]
       } catch (error) {}
     },
-    //文章分类
+    // 文章分类
     onConfirmCate(value) {
       this.user.cateid = value.id
       this.user.catename = value.catename
